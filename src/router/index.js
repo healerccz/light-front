@@ -1,27 +1,41 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Login from '../components/login.vue'
+import Home from '../components/home.vue'
+// 导入全局样式表
+import '../assets/css/global.css'
+import Welcome from '../components/welcome.vue'
+import Switch from '../components/switch.vue'
+import Info from '../components/info.vue'
+
+import axios from 'axios'
+Vue.prototype.$http = axios
 
 Vue.use(VueRouter)
 
 const routes = [
+  { path: '/', redirect: 'home' },
+  { path: '/login', component: Login },
   {
-    path: '/',
-    name: 'Home',
-    component: Home
-  },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: '/home',
+    component: Home,
+    redirect: '/welcome',
+    children: [{ path: '/welcome', component: Welcome }, { path: '/switch', component: Switch }, { path: '/info', component: Info }]
   }
 ]
 
 const router = new VueRouter({
   routes
 })
+
+// router.beforeEach((to, from, next) => {
+//   // to 将要访问的路径
+//   // from 代表从哪个路径跳转而来
+//   // next 是一个函数 代表放行
+//   if (to.path === '/login') return next()
+//   // 获取 cookie
+//   const cookie = window.sessionStorage.getItem('cookie')
+//   if (!cookie) return next('/login')
+// })
 
 export default router
