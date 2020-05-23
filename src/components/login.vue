@@ -27,7 +27,7 @@
         </el-form-item>
         <!-- 按钮 -->
         <el-form-item class="btns">
-          <el-button type="primary" @click="login">登录</el-button>
+          <el-button type="primary" @click="login" @keyup.enter="login">登录</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -79,21 +79,9 @@ export default {
               return that.$message.error('用户名或密码不正确')
             }
             that.$message.success('登录成功')
-            window.sessionStorage.setItem('cookie', data.token)
+            window.sessionStorage.setItem('token', data.token)
             that.$router.push('/home')
           })
-          .catch(function(error) {
-            console.log(error)
-            that.$message.error('登录失败')
-          })
-        // var data = result.data
-        // console.log(result)
-        // if (data.code !== '200') {
-        //   return this.$message.error('登录失败')
-        // }
-        // this.$message.success('登录成功')
-        // window.sessionStorage.setItem('cookie', result.data.token)
-        // this.$router.push('/home')
       })
     }
   }

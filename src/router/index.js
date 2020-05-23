@@ -28,14 +28,16 @@ const router = new VueRouter({
   routes
 })
 
-// router.beforeEach((to, from, next) => {
-//   // to 将要访问的路径
-//   // from 代表从哪个路径跳转而来
-//   // next 是一个函数 代表放行
-//   if (to.path === '/login') return next()
-//   // 获取 cookie
-//   const cookie = window.sessionStorage.getItem('cookie')
-//   if (!cookie) return next('/login')
-// })
+router.beforeEach((to, from, next) => {
+  // to 将要访问的路径
+  // from 代表从哪个路径跳转而来
+  // next 是一个函数 代表放行
+  if (to.path === '/login') return next()
+  // 获取 cookie
+  const token = window.sessionStorage.getItem('token')
+  console.log('token:' + token)
+  if (!token) return next('/login')
+  else { return next() }
+})
 
 export default router

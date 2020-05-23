@@ -45,10 +45,29 @@
 
 <script>
 export default {
+  data() {
+    return {
+      param: {
+        token: ''
+      }
+    }
+  },
   methods: {
     logout() {
-      window.sessionStorage.clear()
-      this.$router.push('/login')
+      this.param.token = window.sessionStorage.getItem('token')
+      var that = this
+      this.$http
+        .post('http://localhost:8030/user/logout', this.param)
+        .then(function(response) {
+          var data = response.data
+          if (data.code === '200') {
+            window.sessionStorage.clear()
+            that.$message.success('退出成功')
+            that.$router.push('/login')
+          } else {
+            that.$message.error('退出失败')
+          }
+        })
     }
   }
 }

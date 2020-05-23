@@ -90,26 +90,22 @@ export default {
           if (result === '') {
             that.value1 = false
             that.$message.error('网关掉线，请检查网关')
-          }
-          if (
-            that.cmd === 1 &&
-            typeof result.attributes.B0012994BA3.SWI !== 'undefined' &&
-            result.attributes.B0012994BA3.SWI === 'ON'
-          ) {
-            that.$message.success('灯已打开')
-            that.value1 = true
-          }
-          if (
-            that.cmd === 2 &&
-            typeof result.attributes.B0012994BA3.SWI !== 'undefined' &&
-            result.attributes.B0012994BA3.SWI === 'OFF'
-          ) {
-            that.$message.success('灯已关闭')
+          } else if (typeof result.attributes.SWI !== 'undefined') {
+            if (that.cmd === 1 && result.attributes.SWI === 'ON') {
+              that.value1 = true
+              that.$message.success('灯已打开')
+            } else if (that.cmd === 2 && result.attributes.SWI === 'OFF') {
+              that.value1 = false
+              that.$message.success('灯已关闭')
+            }
+          } else {
             that.value1 = false
+            that.$message.error('网关掉线，请检查网关')
           }
         })
     },
     changeSwitchBatch(data) {
+      // 批量控制
       var that = this
       this.cmd = data ? 4 : 5
       this.$http
@@ -124,24 +120,20 @@ export default {
           if (result === '') {
             that.value2 = false
             that.$message.error('网关掉线，请检查网关')
-          }
-          if (
-            that.cmd === 4 &&
-            typeof result.attributes.B0012994BA3.SWI !== 'undefined' &&
-            result.attributes.B0012994BA3.SWI === 'ON'
-          ) {
-            that.$message.success('灯已打开')
-            that.value2 = true
-            that.value1 = true
-          }
-          if (
-            that.cmd === 5 &&
-            typeof result.attributes.B0012994BA3.SWI !== 'undefined' &&
-            result.attributes.B0012994BA3.SWI === 'OFF'
-          ) {
-            that.$message.success('灯已关闭')
+          } else if (typeof result.attributes.SWI !== 'undefined') {
+            if (that.cmd === 4 && result.attributes.SWI === 'ON') {
+              that.value2 = true
+              that.value1 = true
+              that.$message.success('灯已打开')
+            } else if (that.cmd === 5 && result.attributes.SWI === 'OFF') {
+              that.value1 = false
+              that.value2 = false
+              that.$message.success('灯已关闭')
+            }
+          } else {
             that.value1 = false
             that.value2 = false
+            that.$message.error('网关掉线，请检查网关')
           }
         })
     }
